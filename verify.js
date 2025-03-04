@@ -2,13 +2,14 @@ require('dotenv').config();  // variables from env file
 const express = require('express');
 const { MongoClient } = require('mongodb');
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3456;
 
 app.use(express.json());  
 
 // env database name
 const uri = process.env.MONGODB_URI;
 const dbName = process.env.DATABASE_NAME;   
+
 let db;
 
 // MongoDB connection
@@ -48,8 +49,4 @@ app.post('/login', async (req, res) => {
 // Start the server
 app.listen(port, () => {
   console.log(`Microservice running on http://localhost:${port}`);
-});
-
-app.listen(port, () => {
-  console.log(`Running on http://localhost:${port}`);
 });
