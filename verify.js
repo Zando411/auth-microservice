@@ -1,4 +1,5 @@
 require('dotenv').config();  // variables from env file
+const bcrypt = require('bcrypt');
 const express = require('express');
 const { MongoClient } = require('mongodb');
 const app = express();
@@ -33,8 +34,8 @@ app.post('/api/login', async (req, res) => {
     // Find the user in the DB
     const user = await db.collection('users').findOne({ email });
 
-    // if the user doesn't have username saved, or incorrect password:
-    if (!user || user.password !== password) {
+    // if the user doesn't have username saved (doesn't exist), or incorrect password:
+    if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
 
@@ -82,13 +83,15 @@ app.post('/api/signup', async (req, res) => {
   try {
     // make sure user doesn't already exist
     const existingUser = await db.collection('users').findOne({ email });
-
     if (existingUser) {
       return res.status(409).json({ message: 'User already exists' });
     }
 
-    // create user
-    const newUser = { email, password: password };
+    // Hash the password before storing
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // create user with hashed password
+    const newUser = { email, password: hashedPassword };
     await db.collection('users').insertOne(newUser);
 
     // Successful login
