@@ -8,7 +8,7 @@ This microservice follows a express.js framework with JSON response.
 **Default Port**: 3456
 **Response Format**: JSON 
 
-#How to Programmatically REQUEST Data
+## How to Programmatically REQUEST Data
 This section shows how to interact with the microservice to make requests
 
 ### Verify Username and Password
