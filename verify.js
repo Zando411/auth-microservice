@@ -1,25 +1,27 @@
-require('dotenv').config();  // variables from env file
+require('dotenv').config(); // variables from env file
 const bcrypt = require('bcrypt');
 const express = require('express');
 const { MongoClient } = require('mongodb');
 const app = express();
+const cors = require('cors');
 const port = process.env.PORT || 3456;
 
-app.use(express.json());  
+app.use(express.json());
+app.use(cors());
 
 // env database name
 const uri = process.env.MONGODB_URI;
-const dbName = process.env.DATABASE_NAME;   
+const dbName = process.env.DATABASE_NAME;
 
 let db;
 
 // MongoDB connection
 MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(client => {
-    db = client.db(dbName);  // env database name 
+  .then((client) => {
+    db = client.db(dbName); // env database name
     console.log(`Connected to Database: ${dbName}`);
   })
-  .catch(error => console.error(error));
+  .catch((error) => console.error(error));
 
 // POST - verify login
 app.post('/api/login', async (req, res) => {
@@ -27,7 +29,9 @@ app.post('/api/login', async (req, res) => {
 
   // Validate:
   if (!email || !password) {
-    return res.status(400).json({ message: 'Error: email and password are required.' });
+    return res
+      .status(400)
+      .json({ message: 'Email and password are required.' });
   }
 
   try {
@@ -52,7 +56,7 @@ app.post('/api/checkUser', async (req, res) => {
 
   // Validate:
   if (!email) {
-    return res.status(400).json({ message: 'Error: email is required.' });
+    return res.status(400).json({ message: 'Email is required.' });
   }
 
   try {
@@ -61,7 +65,8 @@ app.post('/api/checkUser', async (req, res) => {
 
     // if the user doesn't exist
     if (!user) {
-      return res.status(401).json({ message: 'User does not exist' });
+      console.log('User does not exist');
+      return res.status(200).json({ message: 'User does not exist' });
     }
 
     // User exists
@@ -77,7 +82,9 @@ app.post('/api/signup', async (req, res) => {
 
   // Validate:
   if (!email || !password) {
-    return res.status(400).json({ message: 'Error: email and password are required.' });
+    return res
+      .status(400)
+      .json({ message: 'Email and password are required.' });
   }
 
   try {
