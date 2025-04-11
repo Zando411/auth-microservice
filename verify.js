@@ -10,8 +10,8 @@ app.use(express.json());
 app.use(cors());
 
 // env database name
-const uri = process.env.MONGODB_URI;
-const dbName = process.env.DATABASE_NAME;
+const uri = process.env.MONGO_URI;
+const dbName = 'Auth';
 
 let db;
 
