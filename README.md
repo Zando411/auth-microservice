@@ -21,8 +21,9 @@ consider the project functionally complete.
 - This service uses a **basic, insecure** form of authentication that **does not
   include JWT or any other standard security practices**. It is strictly for
   **testing and development use only**, and **must not be used in production**.
-- This service is designed to run only as part of the full CatCall application
-  and is **not intended to be deployed independently**.
+- This service is designed to run only as part of the full
+  [CatCall application](https://github.com/zandonella/CatCall) and is **not
+  intended to be deployed independently**.
 - MongoDB must be running and accessible using the URI defined in your `.env`
   file.
 
